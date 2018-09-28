@@ -1,0 +1,15 @@
+---
+- hosts: remove
+  tasks:
+  - name: rm pkg
+    file: path=/root/telegraf-0.11.1-1.x86_64.rpm state=absent
+  - name: stop service
+    service: name=telegraf state=stopped
+  - name: uninstall telegraf
+    shell: yum remove telegraf-0.11.1-1.x86_64 -y
+  - name: rm scripts
+    file: path=/root/monitor_telegraf.sh state=absent
+  - name: del  cron
+    cron: name="monitor telegraf" minute="*/5" job="/root/monitor_telegraf.sh 2&>1 >> /root/monitor.log" state="absent"
+  - name: rm config
+    file: path=/etc/telegraf state=absent

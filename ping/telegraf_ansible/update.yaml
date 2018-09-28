@@ -1,0 +1,11 @@
+---
+- hosts: prok8s
+  tasks:
+  - name: config
+    template: src=conf/telegraf.conf dest=/etc/telegraf/telegraf.conf backup=yes
+    notify:
+        restart telegraf
+  handlers:
+  - name: restart telegraf
+    service: name=telegraf state=restarted
+
